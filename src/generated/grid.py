@@ -17,8 +17,20 @@ def open_txt(txt_path: str) -> str:
         return file.readlines()
 
 
-sudoku_path = "assets/sudoku_folder/sudoku1.txt"
-sudoku_txt = open_txt(sudoku_path)
+sudoku1_path = "assets/sudoku_folder/sudoku1.txt"
+sudoku1_txt = open_txt(sudoku1_path)
+
+sudoku2_path = "assets/sudoku_folder/sudoku2.txt"
+sudoku2_txt = open_txt(sudoku2_path)
+
+sudoku3_path = "assets/sudoku_folder/sudoku3.txt"
+sudoku3_txt = open_txt(sudoku3_path)
+
+sudoku4_path = "assets/sudoku_folder/sudoku4.txt"
+sudoku4_txt = open_txt(sudoku4_path)
+
+sudoku5_path = "assets/sudoku_folder/sudoku5.txt"
+sudoku5_txt = open_txt(sudoku5_path)
 
 
 # trasform a list of string into a list of int
@@ -76,7 +88,7 @@ while running:
 
     # display grid and number in grid
     draw_grid(screen)
-    draw_numbers(screen, parse_txt(sudoku_txt))
+    draw_numbers(screen, parse_txt(sudoku1_txt))
 
     # flip() the display to put your work on screen
     pygame.display.flip()
