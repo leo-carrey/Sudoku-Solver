@@ -1,3 +1,12 @@
+# from .grid import *
+
+
+# Import time module
+import time
+ 
+
+
+
 class Algo:
     def __init__(self, board):
         self.board = board
@@ -64,16 +73,18 @@ class Algo:
         return None
 
 
+
+
 board = [
-    [0, 7, 2, 9, 0, 0, 0, 3, 0],
-    [0, 0, 1, 0, 0, 6, 0, 8, 0],
-    [0, 0, 0, 0, 4, 0, 0, 6, 0],
-    [9, 6, 0, 0, 0, 4, 1, 0, 8],
-    [0, 4, 8, 7, 0, 5, 0, 9, 6],
-    [0, 0, 5, 6, 0, 8, 0, 0, 3],
-    [0, 0, 0, 4, 0, 2, 0, 1, 0],
-    [8, 5, 0, 0, 6, 0, 3, 2, 7],
-    [1, 0, 0, 8, 5, 0, 0, 0, 0]
+    [0, 0, 9, 0, 8, 5, 0, 6, 3],
+    [0, 7, 0, 9, 6, 0, 0, 0, 0],
+    [5, 0, 1, 0, 0, 4, 0, 0, 0],
+    [0, 0, 6, 7, 0, 3, 0, 0, 4],
+    [0, 4, 0, 2, 1, 0, 3, 9, 0],
+    [8, 0, 0, 0, 9, 0, 0, 5, 7],
+    [9, 8, 4, 5, 0, 0, 6, 0, 0],
+    [0, 0, 7, 6, 4, 9, 0, 3, 0],
+    [6, 1, 0, 0, 2, 0, 0, 4, 0]
 ]
 
 algo = Algo(board)
@@ -83,3 +94,18 @@ algo.solve()
 print("___________________")
 print("Solved board:")
 algo.print_board()
+# record start time
+start = time.time()
+ 
+# define a sample code segment
+a = 0
+for i in range(1000):
+    a += (i**100)
+ 
+# record end time
+end = time.time()
+ 
+# print the difference between start 
+# and end time in milli. secs
+print("The time of execution of above program is :",
+      (end-start) * 10**3, "ms")
