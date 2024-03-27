@@ -1,2 +1,2 @@
 from .backtraking import *
-from .grid import *
+from ..boards.grid import *

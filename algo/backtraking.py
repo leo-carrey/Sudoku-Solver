@@ -1,7 +1,3 @@
-# from .grid import *
-
-
-# Import time module
 import time
  
 
@@ -50,19 +46,19 @@ class Algo:
 
         return True
 
-    def print_board(self):
-        for i in range(len(self.board)):
-            if i % 3 == 0 and i != 0:
-                print("- - - - - - - - - - - - - ")
+    # def print_board(self):
+    #     for i in range(len(self.board)):
+    #         if i % 3 == 0 and i != 0:
+    #             print("- - - - - - - - - - - - - ")
 
-            for j in range(len(self.board[0])):
-                if j % 3 == 0 and j != 0:
-                    print(" | ", end="")
+    #         for j in range(len(self.board[0])):
+    #             if j % 3 == 0 and j != 0:
+    #                 print(" | ", end="")
 
-                if j == 8:
-                    print(self.board[i][j])
-                else:
-                    print(str(self.board[i][j]) + " ", end="")
+    #             if j == 8:
+    #                 print(self.board[i][j])
+    #             else:
+    #                 print(str(self.board[i][j]) + " ", end="")
 
     def find_empty(self):
         for i in range(len(self.board)):
@@ -89,11 +85,13 @@ board = [
 
 algo = Algo(board)
 print("Initial board:")
-algo.print_board()
+# algo.print_board()
 algo.solve()
 print("___________________")
 print("Solved board:")
-algo.print_board()
+# algo.print_board()
+
+
 # record start time
 start = time.time()
  
