@@ -60,9 +60,9 @@ def draw_grid(screen):
         else:
             line_thickness = 1
         pygame.draw.line(screen, BLACK, (0, i * CELL_SIZE),
-                         (WIDTH, i * CELL_SIZE), line_thickness)
+                        (WIDTH, i * CELL_SIZE), line_thickness)
         pygame.draw.line(screen, BLACK, (i * CELL_SIZE, 0),
-                         (i * CELL_SIZE, HEIGHT - CELL_SIZE), line_thickness)
+                        (i * CELL_SIZE, HEIGHT - CELL_SIZE), line_thickness)
 
 
 # Function to draw numbers in Sudoku grid
@@ -76,24 +76,51 @@ def draw_numbers(screen, grid):
                     num_surface, (j * CELL_SIZE + 15, i * CELL_SIZE + 10))
 
 
+def draw_button(screen, text, position):
+    font = pygame.font.Font(None, 30)
+    button_text = font.render(text, True, BLACK)
+    button_rect = button_text.get_rect(center=position)
+    pygame.draw.rect(screen, (250, 0, 250), button_rect, 20)
+    screen.blit(button_text, button_rect)
+    return button_rect
+
+
+button1_width = 60
+button1_height = 580
+
+show_solved_grid = False
 while running:
-    # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:  # Check if the left mouse button is clicked
+                mouse_pos = pygame.mouse.get_pos()  # Get mouse click position
+                if solve_button_rect.collidepoint(mouse_pos):
+                    # Load Sudoku from file
+                    sudoku_grid = parse_txt(sudoku1_txt)
+                    solved, solved_grid = solve_sudoku(sudoku_grid)
 
-    # fill the screen with a color to wipe away anything from last frame
+                    if solved:
+                        show_solved_grid = True
+                    else:
+                        print("No solution exists!")
+
+    sudoku_grid = parse_txt(sudoku1_txt)
+
     screen.fill("white")
-
-    # display grid and number in grid
     draw_grid(screen)
-    draw_numbers(screen, parse_txt(sudoku1_txt))
 
-    # flip() the display to put your work on screen
+    if show_solved_grid:
+        draw_numbers(screen, solved_grid) # Draw the solved grid
+    else:
+        draw_numbers(screen, sudoku_grid) # Draw the grid
+
+    # Coordinates to place the button
+    button_position = (button1_width, button1_height)
+    solve_button_rect = draw_button(screen, "Solve", button_position)
+
     pygame.display.flip()
-
-    # limits FPS to 60
-    clock.tick(60)  
+    clock.tick(60)
 
 pygame.quit()
