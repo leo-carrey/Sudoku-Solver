@@ -64,8 +64,10 @@ class Display_interface:
         pygame.draw.rect(self.screen, (250, 0, 250), button_rect, 20)
         self.screen.blit(button_text, button_rect)
         return button_rect
+    
 
-    def run(self):
+    def run(self, methods):
+        sudoku_grid = self.parse_txt(self.sudoku1_txt) # Assuming always the first sudoku
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -74,8 +76,7 @@ class Display_interface:
                     if event.button == 1:
                         mouse_pos = pygame.mouse.get_pos()
                         if self.solve_button_rect.collidepoint(mouse_pos):
-                            sudoku_grid = self.parse_txt(self.sudoku1_txt)  # Assuming always the first sudoku
-                            solved, solved_grid = self.solve_sudoku(sudoku_grid)
+                            solved, solved_grid = methods(sudoku_grid)
                             if solved:
                                 self.show_solved_grid = True
                             else:

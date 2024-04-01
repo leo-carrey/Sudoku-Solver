@@ -1,34 +1,7 @@
 import time
+from math import sqrt
 
 class SudokuSolver:
-    def __init__(self, txt_path):
-        self.txt_path = txt_path
-        self.parsed_text = self.parse_text()
-        self.clean_txt = self.remove_backslash()
-        self.clean_int = self.transform_to_int(self.clean_txt)
-        self.flattened_grid = self.flatten_grid(self.clean_int)
-
-    def parse_text(self):
-        with open(self.txt_path, "r") as txt_file:
-            return txt_file.readlines()
-
-    def remove_backslash(self):
-        new_txt_arr = []
-        for line in self.parsed_text:
-            clean_line = line.replace("\n", "")
-            clean_line = clean_line.replace("_", "0")
-            new_txt_arr.append(clean_line)
-        return new_txt_arr
-    
-    def transform_to_int(self, cleaned_txt):
-        cleaned_int = []
-        for line in cleaned_txt:
-            int_line = []
-            for character in line:
-                int_line.append(int(character))
-            cleaned_int.append(int_line)
-        return cleaned_int
-
     def flatten_grid(self, grid):
         flattened_grid = []
         for sublist in grid:
@@ -68,16 +41,35 @@ class SudokuSolver:
                     return False
         
         return True
+    
+    
+    def is_grid_square(self, len_grid):
+        return len_grid % 9 == 0 and sqrt(len_grid) % 1 == 0
 
-    def solve_sudoku(self):
+    def transform_grid_2D(self, grid):
+        len_grid = len(grid)
+        if not self.is_grid_square(len_grid):
+            raise 
+        
+        total = len(grid)
+        size = int(sqrt(total))
+        result = []
+        for i in range(0, total, size):
+            result.append(grid[i:i + size])
+        return result
+
+
+    def solve_sudoku(self, grid):
+        flattened_grid = self.flatten_grid(grid)
         start_time = time.time()  # start recording
-        if self.solve_sudoku_recursive(self.flattened_grid):  # call function
+        if solved_grid := self.solve_sudoku_recursive(flattened_grid):  # call function
             end_time = time.time()  # end recording
             elapsed_time = end_time - start_time  # calcul time execution
             print("Temps d'exécution :", elapsed_time, "secondes")
-            return True
+            final_grid = self.transform_grid_2D(solved_grid)
+            return True, final_grid
         else:
-            return False
+            return False, final_grid
 
     def solve_sudoku_recursive(self, grid):
         row, col = self.find_empty_location(grid)
@@ -89,26 +81,9 @@ class SudokuSolver:
                 grid[row * 9 + col] = num
                 
                 if self.solve_sudoku_recursive(grid):
-                    return True
+                    return grid
                 
                 grid[row * 9 + col] = 0
         
         return False
 
-if __name__ == "__main__":
-    solver = SudokuSolver("Sudoku-Solver/assets/sudoku_folder/sudoku5.txt")
-    
-    # Resolve Sudoku
-    if solver.solve_sudoku():
-        print("Sudoku résolu :")
-        # Print the solved Sudoku in a grid format
-        for i in range(9):
-            if i % 3 == 0 and i != 0:
-                print("-" * 21)
-            for j in range(9):
-                if j % 3 == 0 and j != 0:
-                    print("|", end=" ")
-                print(solver.flattened_grid[i * 9 + j], end=" ")
-            print()
-    else:
-        print("Aucune solution trouvée.")
