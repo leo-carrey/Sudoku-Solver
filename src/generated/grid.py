@@ -1,6 +1,6 @@
 import pygame
 
-class SudokuSolver:
+class Display_interface:
     def __init__(self):
         pygame.init()
         self.BLACK = (0, 0, 0)
