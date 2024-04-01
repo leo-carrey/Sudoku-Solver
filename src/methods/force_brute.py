@@ -1,7 +1,4 @@
-class force_brute:
-    def __init__(self, grid):
-        self.grid = grid
-
+class Force_brute:
     def validate_grid(self, grid):
         for row in range(9):
             for col in range(9):
