@@ -4,7 +4,7 @@
 
 # <p align="center">Sudoku Solver</p>
   
-we're a group of 3 people and we need to create an application with a graphical interface for solving sudoku grids.
+we're a group of 3 people and we need to create an application with a graphical interface for solving sudoku grids. We need to solve this algorithm in two different ways: one by backtracking and the other by brute force.
 
 ## 🧐 Features    
 - Change grids to solve
