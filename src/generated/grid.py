@@ -1,6 +1,6 @@
 import pygame
 
-class Display_interface:
+class Display_interface():
     def __init__(self):
         pygame.init()
         self.BLACK = (0, 0, 0)
@@ -11,32 +11,40 @@ class Display_interface:
         self.clock = pygame.time.Clock()
         self.running = True
         self.show_solved_grid = False
-        self.sudoku1_txt = self.open_txt("assets/sudoku_folder/sudoku1.txt")
-        self.sudoku2_txt = self.open_txt("assets/sudoku_folder/sudoku2.txt")
-        self.sudoku3_txt = self.open_txt("assets/sudoku_folder/sudoku3.txt")
-        self.sudoku4_txt = self.open_txt("assets/sudoku_folder/sudoku4.txt")
-        self.sudoku5_txt = self.open_txt("assets/sudoku_folder/sudoku5.txt")
-
+        self.current_grid_index = 0  # Keep track of the current grid
+        self.sudoku_files = [
+            "assets/sudoku_folder/sudoku1.txt",
+            "assets/sudoku_folder/sudoku2.txt",
+            "assets/sudoku_folder/sudoku3.txt",
+            "assets/sudoku_folder/sudoku4.txt",
+            "assets/sudoku_folder/sudoku5.txt"
+        ]
+        self.sudoku_grids = [self.parse_txt(self.open_txt(file)) for file in self.sudoku_files]
+        self.sudoku_grid = self.sudoku_grids[self.current_grid_index]  # Start with the first sudoku
 
     def open_txt(self, txt_path):
         with open(txt_path, "r") as file:
             return file.readlines()
-
-    def parse_line(self, line: str) -> list[int]:
-        new_line = line[:-1]
-        new_line = line.replace("_", "0")
-        new_line = list(new_line)[:-1]
-        parsed_line = []
-        for letter in new_line:
-            parsed_line.append(int(letter))
-        return parsed_line
-
-    def parse_txt(self, txt_file: list[str]) -> list[list[int]]:
-        parsed_txt = []
+        
+    def parse_txt(self, txt_file):
+        # Assuming txt_file is a list of strings from the file
+        grid = []
         for line in txt_file:
-            parsed_txt.append(self.parse_line(line))
-        return parsed_txt
+            # Remove newline characters and replace placeholders
+            line = line.strip().replace('_', '0')
+            # Convert each character in the line to an integer
+            row = [int(char) for char in line]
+            grid.append(row)
+        return grid
 
+    # ... keep all your existing methods, but remove the individual sudoku_txt attributes ...
+
+    def swap_sudoku_grid(self):
+        # Move to the next grid, wrap around if at the end
+        self.current_grid_index = (self.current_grid_index + 1) % len(self.sudoku_grids)
+        self.sudoku_grid = self.sudoku_grids[self.current_grid_index]
+        self.show_solved_grid = False  # Reset to show unsolved grid
+        
     def draw_grid(self):
         for i in range(10):
             if i % 3 == 0:
@@ -47,7 +55,7 @@ class Display_interface:
                             (self.WIDTH, i * self.CELL_SIZE), line_thickness)
             pygame.draw.line(self.screen, self.BLACK, (i * self.CELL_SIZE, 0),
                             (i * self.CELL_SIZE, self.HEIGHT - self.CELL_SIZE), line_thickness)
-
+        
     def draw_numbers(self, grid):
         font = pygame.font.Font(None, 40)
         for i in range(9):
@@ -56,7 +64,7 @@ class Display_interface:
                     num_surface = font.render(str(grid[i][j]), True, self.BLACK)
                     self.screen.blit(
                         num_surface, (j * self.CELL_SIZE + 15, i * self.CELL_SIZE + 10))
-
+                    
     def draw_button(self, text, position):
         font = pygame.font.Font(None, 30)
         button_text = font.render(text, True, self.BLACK)
@@ -64,10 +72,8 @@ class Display_interface:
         pygame.draw.rect(self.screen, (250, 0, 250), button_rect, 20)
         self.screen.blit(button_text, button_rect)
         return button_rect
-    
 
     def run(self, methods):
-        sudoku_grid = self.parse_txt(self.sudoku1_txt) # Assuming always the first sudoku
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -76,11 +82,13 @@ class Display_interface:
                     if event.button == 1:
                         mouse_pos = pygame.mouse.get_pos()
                         if self.solve_button_rect.collidepoint(mouse_pos):
-                            solved, solved_grid = methods(sudoku_grid)
+                            solved, solved_grid = methods(self.sudoku_grid)
                             if solved:
                                 self.show_solved_grid = True
                             else:
                                 print("No solution exists!")
+                        elif self.swap_button_rect.collidepoint(mouse_pos):
+                            self.swap_sudoku_grid()
 
             self.screen.fill("white")
             self.draw_grid()
@@ -88,12 +96,13 @@ class Display_interface:
             if self.show_solved_grid:
                 self.draw_numbers(solved_grid)
             else:
-                self.draw_numbers(sudoku_grid)
+                self.draw_numbers(self.sudoku_grid)
 
-            button_position = (60, 580)
-            self.solve_button_rect = self.draw_button("Solve", button_position)
+            self.solve_button_rect = self.draw_button("Solve", (60, 580))
+            self.swap_button_rect = self.draw_button("Swap", (150, 580))  # Add the swap button
 
             pygame.display.flip()
             self.clock.tick(60)
 
         pygame.quit()
+        
