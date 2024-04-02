@@ -17,7 +17,9 @@ class Display_interface():
             "assets/sudoku_folder/sudoku2.txt",
             "assets/sudoku_folder/sudoku3.txt",
             "assets/sudoku_folder/sudoku4.txt",
-            "assets/sudoku_folder/sudoku5.txt"
+            "assets/sudoku_folder/sudoku5.txt",
+            "assets/sudoku_folder/sudoku6.txt",
+            "assets/sudoku_folder/sudoku7.txt"
         ]
         self.sudoku_grids = [self.parse_txt(self.open_txt(file)) for file in self.sudoku_files]
         self.sudoku_grid = self.sudoku_grids[self.current_grid_index]  # Start with the first sudoku
@@ -70,7 +72,7 @@ class Display_interface():
         self.screen.blit(button_text, button_rect)
         return button_rect
 
-    def run(self, methods):
+    def run(self, methods_Backtracking, methods_brute_force):
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -78,8 +80,14 @@ class Display_interface():
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         mouse_pos = pygame.mouse.get_pos()
-                        if self.solve_button_rect.collidepoint(mouse_pos):
-                            solved, solved_grid = methods(self.sudoku_grid)
+                        if self.Backtracking_button_rect.collidepoint(mouse_pos):
+                            solved, solved_grid = methods_Backtracking(self.sudoku_grid)
+                            if solved:
+                                self.show_solved_grid = True
+                            else:
+                                print("No solution exists!")
+                        if self.Brute_force_button_rect.collidepoint(mouse_pos):
+                            solved, solved_grid = methods_brute_force(self.sudoku_grid)
                             if solved:
                                 self.show_solved_grid = True
                             else:
@@ -95,8 +103,9 @@ class Display_interface():
             else:
                 self.draw_numbers(self.sudoku_grid)
 
-            self.solve_button_rect = self.draw_button("Solve", (60, 580))
-            self.swap_button_rect = self.draw_button("Swap", (150, 580))  # Add the swap button
+            self.Backtracking_button_rect = self.draw_button("Backtracking", (100, 580))
+            self.Brute_force_button_rect = self.draw_button("Brute Force", (300, 580)) 
+            self.swap_button_rect = self.draw_button("Swap", (450, 580))  # Add the swap button
 
             pygame.display.flip()
             self.clock.tick(60)

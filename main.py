@@ -6,7 +6,7 @@ def main():
     Backtracking = SudokuSolver()
     Brute_Force = Force_brute()
     DisplayInterface = Display_interface()
-    DisplayInterface.run(Backtracking.solve_sudoku)
+    DisplayInterface.run(Backtracking.solve_sudoku, Brute_Force.solve_sudoku)
 
 
 if __name__ == "__main__":

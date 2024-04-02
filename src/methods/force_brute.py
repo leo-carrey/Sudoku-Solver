@@ -64,4 +64,4 @@ class Force_brute:
             for j, (row, col) in enumerate(num_pos):
                 sudoku_grid[row][col] = int(new_num[j])
             if self.validate_grid(sudoku_grid):
-                return sudoku_grid
+                return True, sudoku_grid
