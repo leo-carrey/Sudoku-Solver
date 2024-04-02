@@ -9,21 +9,26 @@ class Force_brute:
 
     # Function to check if a move is valid
     def is_valid_move(self, grid, row, col, num):
+        if num == 0:
+            return False
+
         # Check if the number is not already in the row
-        if num in grid[row]:
+        if grid[row].count(num) > 1:
             return False
 
         # Check if the number is not already in the column
-        if num in [grid[i][col] for i in range(9)]:
+        if [grid[i][col] for i in range(9)].count(num) > 1:
             return False
 
         # Check if the number is not already in the 3x3 box
         start_row = 3 * (row // 3)
         start_col = 3 * (col // 3)
+        arr = []
         for i in range(start_row, start_row + 3):
             for j in range(start_col, start_col + 3):
-                if grid[i][j] == num:
-                    return False
+                arr.append(grid[i][j])
+        if arr.count(num) > 1:
+            return False  
         return True
 
     def get_empty_pos(self, sudoku_grid):
@@ -54,6 +59,8 @@ class Force_brute:
         end_count = self.count_limite(num_pos)
         for num in range(start_count, end_count + 1):
             new_num = list(str(num))
+            if '0' in new_num:
+                continue
             for j, (row, col) in enumerate(num_pos):
                 sudoku_grid[row][col] = int(new_num[j])
             if self.validate_grid(sudoku_grid):
