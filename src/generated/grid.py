@@ -21,13 +21,13 @@ class Display_interface():
         ]
         self.sudoku_grids = [self.parse_txt(self.open_txt(file)) for file in self.sudoku_files]
         self.sudoku_grid = self.sudoku_grids[self.current_grid_index]  # Start with the first sudoku
+        
 
     def open_txt(self, txt_path):
         with open(txt_path, "r") as file:
             return file.readlines()
         
     def parse_txt(self, txt_file):
-        # Assuming txt_file is a list of strings from the file
         grid = []
         for line in txt_file:
             # Remove newline characters and replace placeholders
@@ -37,10 +37,7 @@ class Display_interface():
             grid.append(row)
         return grid
 
-    # ... keep all your existing methods, but remove the individual sudoku_txt attributes ...
-
     def swap_sudoku_grid(self):
-        # Move to the next grid, wrap around if at the end
         self.current_grid_index = (self.current_grid_index + 1) % len(self.sudoku_grids)
         self.sudoku_grid = self.sudoku_grids[self.current_grid_index]
         self.show_solved_grid = False  # Reset to show unsolved grid
