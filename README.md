@@ -22,7 +22,7 @@ we're a group of 3 people and we need to create an application with a graphical 
 # <p align="center">🙇 Study about time of execution</p>
   
 In a table, we have collected execution time data for each grid.
-We ran the program 4 times to obtain a meaningful comparison.
+We executed the backtracking solution 4 times to obtain a meaningful comparison.
     
 
 | Grid| Time Execution| X
@@ -47,13 +47,18 @@ We ran the program 4 times to obtain a meaningful comparison.
 | 5    | 0.05485272407531738    |    |
 | 5    | 0.06878328323364258    |    |
 | 5    | 0.06876730918884277    |    |
+
+Sadly we cannot compare the bruteforce and the backtracking alogrithm 
+as it would take way too long for the brute force to get any meaningfull 
+resusts.
         
   
 
 ## 🧐 Conclusion   
 - We can see that for grids 1, 2, 3, 4, the execution time decreases after each execution.
 - The higher the number of unknowns, the longer it will take the program to execute.
-- Grid 5 has 58 unknowns, and unlike the others, its execution time increases. 
+- Grid 5 has 58 unknowns, and unlike the others, its execution time increases.
+- The Bruteforce method takes too long and if the grid has too many empty slots, it doesn't work. 
 
  
 ## 🙇 Author
