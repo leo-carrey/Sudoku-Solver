@@ -68,7 +68,7 @@ class Display_interface():
         font = pygame.font.Font(None, 30)
         button_text = font.render(text, True, self.BLACK)
         button_rect = button_text.get_rect(center=position)
-        pygame.draw.rect(self.screen, (250, 0, 250), button_rect, 20)
+        pygame.draw.rect(self.screen, (250, 0, 250), button_rect, 10, 20)
         self.screen.blit(button_text, button_rect)
         return button_rect
 
