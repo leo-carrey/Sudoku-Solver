@@ -1,3 +1,4 @@
+import time
 class Force_brute:
     def validate_grid(self, grid):
         for row in range(9):
@@ -57,6 +58,7 @@ class Force_brute:
         num_pos = self.get_empty_pos(sudoku_grid)
         start_count = self.start_number(num_pos)
         end_count = self.count_limite(num_pos)
+        start_time = time.time()  # start recording
         for num in range(start_count, end_count + 1):
             new_num = list(str(num))
             if '0' in new_num:
@@ -64,4 +66,8 @@ class Force_brute:
             for j, (row, col) in enumerate(num_pos):
                 sudoku_grid[row][col] = int(new_num[j])
             if self.validate_grid(sudoku_grid):
+                end_time = time.time()  # end recording
+                elapsed_time = end_time - start_time  # calcul time execution
+                print("Temps d'exécution :", elapsed_time, "secondes")
                 return True, sudoku_grid
+                
